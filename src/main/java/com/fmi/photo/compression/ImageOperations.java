@@ -48,8 +48,8 @@ public class ImageOperations {
         }
     }
 
-    public int[][] getRGBMatrix(int[][] matrixRed, int[][] matrixGreen, int[][] matrixBlue, int[][] matrixAlpha){
-        int [][] result = new int[matrixRed.length][matrixRed[0].length];
+    public int[][] getRGBMatrix(int[][] matrixRed, int[][] matrixGreen, int[][] matrixBlue, int[][] matrixAlpha) {
+        int[][] result = new int[matrixRed.length][matrixRed[0].length];
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[0].length; j++) {
                 result[i][j] = new Color(matrixRed[i][j], matrixGreen[i][j], matrixBlue[i][j], matrixAlpha[i][j]).getRGB();
@@ -59,10 +59,10 @@ public class ImageOperations {
     }
 
     public void generateImage(int[][] rgbMatrix, String filename, String extension) throws IOException {
-        BufferedImage img = new BufferedImage(rgbMatrix[0].length, rgbMatrix.length, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(rgbMatrix[0].length, rgbMatrix.length, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < rgbMatrix.length; i++) {
             for (int j = 0; j < rgbMatrix[i].length; j++) {
-                img.setRGB(j,i, rgbMatrix[i][j]);
+                img.setRGB(j, i, rgbMatrix[i][j]);
             }
         }
         File output = new File(filename);
