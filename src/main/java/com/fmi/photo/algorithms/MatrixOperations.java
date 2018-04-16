@@ -1,7 +1,6 @@
 package com.fmi.photo.algorithms;
 
 import org.apache.commons.math3.geometry.Vector;
-import org.apache.commons.math3.geometry.euclidean.oned.Vector1D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.linear.*;
 
@@ -140,4 +139,6 @@ public class MatrixOperations {
 
         return result;
     }
+
+    public double[][] generateDiagonalMatrix(double)
 }
