@@ -48,6 +48,18 @@ public class ImageOperations {
         }
     }
 
+    public void writeToFile(double[][] matrix, String fileName) throws FileNotFoundException {
+        File file = new File(fileName);
+        PrintWriter printWriter = new PrintWriter(file);
+
+        for (int row = 0; row < matrix.length; row++) {
+            for (int column = 0; column < matrix[row].length; column++) {
+                printWriter.print(matrix[row][column] + " ");
+            }
+            printWriter.println();
+        }
+    }
+
     public int[][] getRGBMatrix(int[][] matrixRed, int[][] matrixGreen, int[][] matrixBlue, int[][] matrixAlpha) {
         int[][] result = new int[matrixRed.length][matrixRed[0].length];
         for (int i = 0; i < result.length; i++) {

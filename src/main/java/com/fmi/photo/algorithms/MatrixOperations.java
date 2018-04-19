@@ -68,6 +68,16 @@ public class MatrixOperations {
         return result;
     }
 
+    public double[][] generateUis(double[][] Av, double[] singularValues) {
+        double[][] Ui = new double[singularValues.length][Av[0].length];
+
+        for(int i = 0; i < singularValues.length; i++) {
+            Ui[i] = multiplyWithScalar(Av[i], 1.0 / singularValues[i]);
+        }
+
+        return Ui;
+    }
+
     public double[][] multiply(double[][] a, double[][] b) {
         double[][] result = null;
 
@@ -117,6 +127,16 @@ public class MatrixOperations {
         return sol.toArray();
     }
 
+    public double[][] generateAvis(double[][] a, double[][] eigenVectors) {
+        double[][] Av = new double[eigenVectors.length][a.length];
+        for(int i = 0; i < eigenVectors.length; i++) {
+            double[][] eigenVectors1 = new double[][]{eigenVectors[i]};
+            Av[i] = transpose(multiply(a, transpose(eigenVectors1)))[0];
+        }
+
+        return Av;
+    }
+
     public boolean areOrthogonal(double[] a, double[] b) {
         Vector vec1 = new Vector2D(a);
         Vector vec2 = new Vector2D(b);
@@ -140,5 +160,18 @@ public class MatrixOperations {
         return result;
     }
 
-    public double[][] generateDiagonalMatrix(double)
+    public double[][] generateDiagonalMatrix(double[] array) {
+        double[][] result = new double[array.length][array.length];
+        for(int i = 0; i < array.length; i++) {
+            for(int j = 0; j < array.length; j++) {
+                if(i != j) {
+                    result[i][j] = 0;
+                } else {
+                    result[i][j] = array[i];
+                }
+            }
+        }
+
+        return result;
+    }
 }
