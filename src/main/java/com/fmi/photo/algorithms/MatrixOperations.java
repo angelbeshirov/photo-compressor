@@ -71,7 +71,7 @@ public class MatrixOperations {
     public double[][] generateUis(double[][] Av, double[] singularValues) {
         double[][] Ui = new double[singularValues.length][Av[0].length];
 
-        for(int i = 0; i < singularValues.length; i++) {
+        for (int i = 0; i < singularValues.length; i++) {
             Ui[i] = multiplyWithScalar(Av[i], 1.0 / singularValues[i]);
         }
 
@@ -116,6 +116,70 @@ public class MatrixOperations {
         return result;
     }
 
+    public double[][] getU(double[][] a) {
+        RealMatrix realMatrix = new Array2DRowRealMatrix(a);
+        SingularValueDecomposition singularValueDecomposition = new SingularValueDecomposition(realMatrix);
+
+        RealMatrix u = singularValueDecomposition.getU();
+        return u.getData();
+    }
+
+    public double[][] getSignma(double[][] a) {
+        RealMatrix realMatrix = new Array2DRowRealMatrix(a);
+        SingularValueDecomposition singularValueDecomposition = new SingularValueDecomposition(realMatrix);
+
+        RealMatrix s = singularValueDecomposition.getS();
+        return s.getData();
+    }
+
+    public double[][] getV(double[][] a) {
+        RealMatrix realMatrix = new Array2DRowRealMatrix(a);
+        SingularValueDecomposition singularValueDecomposition = new SingularValueDecomposition(realMatrix);
+
+        RealMatrix v = singularValueDecomposition.getV();
+        return v.getData();
+    }
+
+    public double[][] roundToInt(double[][] a) {
+        double eps = 0.0001;
+        double[][] result = new double[a.length][a[0].length];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+                int casted = (int) a[i][j];
+                if (Math.abs(a[i][j] - casted) < eps) {
+                    if (a[i][j] < 0) {
+                        result[i][j] = Math.ceil(a[i][j]);
+                    } else {
+                        result[i][j] = Math.floor(a[i][j]);
+                    }
+                } else {
+                    if (a[i][j] > 0) {
+                        result[i][j] = Math.ceil(a[i][j]);
+                    } else {
+                        result[i][j] = Math.floor(a[i][j]);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public double[][] compressing(double[][] a, double eps) {
+        double[][] result = new double[a.length][a[0].length];
+
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                if (a[i][j] < eps) {
+                    result[i][j] = 0;
+                } else {
+                    result[i][j] = a[i][j];
+                }
+            }
+        }
+        return result;
+    }
+
     public double[] generateSolution(double[][] a) {
         RealMatrix realMatrix = new Array2DRowRealMatrix(a);
         RealVector realVector = new ArrayRealVector(new double[]{0, 0});
@@ -129,9 +193,9 @@ public class MatrixOperations {
 
     public double[][] generateAvis(double[][] a, double[][] eigenVectors) {
         double[][] Av = new double[eigenVectors.length][a.length];
-        for(int i = 0; i < eigenVectors.length; i++) {
-            double[][] eigenVectors1 = new double[][]{eigenVectors[i]};
-            Av[i] = transpose(multiply(a, transpose(eigenVectors1)))[0];
+        for (int i = 0; i < eigenVectors.length; i++) {
+            double[][] eigenVectorsAsColumns = new double[][]{eigenVectors[i]};
+            Av[i] = transpose(multiply(a, transpose(eigenVectorsAsColumns)))[0];
         }
 
         return Av;
@@ -162,9 +226,9 @@ public class MatrixOperations {
 
     public double[][] generateDiagonalMatrix(double[] array) {
         double[][] result = new double[array.length][array.length];
-        for(int i = 0; i < array.length; i++) {
-            for(int j = 0; j < array.length; j++) {
-                if(i != j) {
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array.length; j++) {
+                if (i != j) {
                     result[i][j] = 0;
                 } else {
                     result[i][j] = array[i];
