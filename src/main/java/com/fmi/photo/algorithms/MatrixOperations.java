@@ -192,13 +192,31 @@ public class MatrixOperations {
     }
 
     public double[][] generateAvis(double[][] a, double[][] eigenVectors) {
-        double[][] Av = new double[eigenVectors.length][a.length];
-        for (int i = 0; i < eigenVectors.length; i++) {
-            double[][] eigenVectorsAsColumns = new double[][]{eigenVectors[i]};
-            Av[i] = transpose(multiply(a, transpose(eigenVectorsAsColumns)))[0];
+        //raya: this is the case when the initial matrix (A) has more rows than columns (m>n)
+        // here we multiply A[mxn] with the transposed eigen vectors vi[nx1] (because n < m)
+        // this multiplication generates a matrix Av[nxm]
+        if(a[0].length == eigenVectors.length) {
+            double[][] Av = new double[eigenVectors.length][a.length];
+            for (int i = 0; i < eigenVectors.length; i++) {
+                double[][] eigenVectorsAsColumns = new double[][]{eigenVectors[i]};
+                Av[i] = transpose(multiply(a, transpose(eigenVectorsAsColumns)))[0];
+            }
+            return Av; // TODO : remove multiple return
+        } else {
+            //raya: here is the opposite case m<n
+            // we multiply each eigen vector vi[1xm] (NOT transposed) with A
+            // generated matrix is Av[mxn] ?
+            double[][] Av = new double[eigenVectors.length][a[0].length];
+            for(int i = 0; i < eigenVectors.length; ++i) {
+                double[][] eigenVectorAsRow = new double[][]{eigenVectors[i]};
+                Av[i] = multiply(eigenVectorAsRow, a)[0];
+            }
+
+            return Av;
         }
 
-        return Av;
+
+
     }
 
     public boolean areOrthogonal(double[] a, double[] b) {

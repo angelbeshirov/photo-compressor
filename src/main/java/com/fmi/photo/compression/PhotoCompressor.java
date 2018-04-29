@@ -27,7 +27,7 @@ public class PhotoCompressor {
         ImageOperations imageOperations = new ImageOperations();
         MatrixOperations matrixOperations = new MatrixOperations();
 
-        BufferedImage img = ImageIO.read(new File("src\\main\\resources\\asun.jpg"));
+        BufferedImage img = ImageIO.read(new File("src\\main\\resources\\sheep.jpg"));
         int[][] matrixRed = imageOperations.getMatrix(img, ImageOperations.ExtractColor.RED);
         int[][] matrixGreen = imageOperations.getMatrix(img, ImageOperations.ExtractColor.GREEN);
         int[][] matrixBlue = imageOperations.getMatrix(img, ImageOperations.ExtractColor.BLUE);
@@ -101,68 +101,71 @@ public class PhotoCompressor {
         ImageOperations imageOperations = new ImageOperations();
         MatrixOperations matrixOperations = new MatrixOperations();
 
-        trySvd();
 //        double[][] a = {{2, 0}, {1, 2}, {0, 1}, {22, 0}, {11, 2}, {41, 12}};
-//        double a[][] = extractMatrix();
-//        for(int i=0;i<a.length;i++)
-//        System.out.println(Arrays.toString(a[i]));
-//        matrixOperations.test(a);
-//        double[][] result;
-//        if (a[0].length > a.length) {
-//            result = matrixOperations.multiply(a, matrixOperations.transpose(a));
-//        } else {
-//            result = matrixOperations.multiply(matrixOperations.transpose(a), a);
-//        }
-//
+        double a[][] = extractMatrix(4);
+        //for(int i=0;i<a.length;i++)
+        //System.out.println(Arrays.toString(a[i]));
+        // matrixOperations.test(a);
+        double[][] result;
+        if (a[0].length > a.length) {
+            result = matrixOperations.multiply(a, matrixOperations.transpose(a));
+        } else {
+            result = matrixOperations.multiply(matrixOperations.transpose(a), a);
+        }
+        int resultLen = result.length;
 //        System.out.println("Transposed and multiplied matrix is:");
 //        print2DMatrix(result);
-//
-//        System.out.println("Eigenvalues are:");
-//        double[] eigenValues = matrixOperations.getEigenValues(result);
+
+        //System.out.println("Eigenvalues are:");
+
+        double[] eigenValues = matrixOperations.getEigenValues(result);
 //        System.out.println(Arrays.toString(eigenValues));
 //        System.out.println("Eigenvectors are:");
-//        double[][] eigenVectors = matrixOperations.getEigenVectors(result);
+        double[][] eigenVectors = matrixOperations.getEigenVectors(result);
 //        print2DMatrix(eigenVectors);
-//        System.out.println();
-//
-//        double[][] Av = matrixOperations.generateAvis(a, eigenVectors);
-//
+ //       System.out.println();
+
+        double[][] Av = matrixOperations.generateAvis(a, eigenVectors);
+
 //        System.out.println("AV: ");
 //        print2DMatrix(Av);
-//
-//
-////        System.out.println("The two vectors " + (matrixOperations.areOrthogonal(eigenVectors[0], eigenVectors[1]) ? "are " : "are not ") + "orthogonal");
-//
-//
-////        System.out.println("Second multiplication");
-////        System.out.println(Arrays.toString(Av2));
-////        ui = 1/singular[i]*Avi
-//
-//        double[] singularValues = matrixOperations.getSingularValues(eigenValues);
-//
+
+
+//        System.out.println("The two vectors " + (matrixOperations.areOrthogonal(eigenVectors[0], eigenVectors[1]) ? "are " : "are not ") + "orthogonal");
+
+
+//        System.out.println("Second multiplication");
+//        System.out.println(Arrays.toString(Av2));
+//        ui = 1/singular[i]*Avi
+
+        double[] singularValues = matrixOperations.getSingularValues(eigenValues);
+
 //        System.out.println("Singular values are:");
 //        System.out.println(Arrays.toString(singularValues));
+
+            double[][] Ui = matrixOperations.generateUis(Av, singularValues);
+
+           // double[][] U = matrixOperations.transpose(Ui);
+
+           // System.out.println("UI : ");
+          //  print2DMatrix(U);
 //
-//            double[][] Ui = matrixOperations.generateUis(Av, singularValues);
-//
-//            double[][] U = matrixOperations.transpose(Ui);
-//
-//            System.out.println("UI : ");
-//            print2DMatrix(U);
-////
-//        double[][] S = matrixOperations.generateDiagonalMatrix(singularValues);
-//        System.out.println("Singular matrix: ");
+        double[][] S = matrixOperations.generateDiagonalMatrix(singularValues);
+        System.out.println("Singular matrix: ");
 //        print2DMatrix(S);
-////
-//        double[][] V = matrixOperations.transpose(eigenVectors);
-//        System.out.println("V: ");
+//      raya: NOTE that this is actually V transposed
+        double[][] V = matrixOperations.transpose(eigenVectors);
+        System.out.println("V: ");
 //        print2DMatrix(V);
-////
-//        System.out.println("FINAL: ");
-//        print2DMatrix(matrixOperations.multiply(U, matrixOperations.multiply(S, V)));
 //
-//        double[][] finalResult = matrixOperations.multiply(U, matrixOperations.multiply(S, V));
-////        imageOperations.writeToFile(finalResult, "src\\main\\resources\\TEST.txt");
+        System.out.println("FINAL: ");
+//        print2DMatrix(matrixOperations.multiply(U, matrixOperations.multiply(S, V)));
+
+        // raya: this is applicable only when columns are more than rows: V(transposed)*S*U
+        // when rows are more that columns Ui(transposed a.k.a. U)*S*V(transposed)
+        double[][] finalResult = matrixOperations.multiply(V, matrixOperations.multiply(S, Ui));
+        //        double[][] finalResult = matrixOperations.multiply(U, matrixOperations.multiply(S, V));
+        imageOperations.writeToFile(finalResult, "src\\main\\resources\\TEST.txt");
 //        print2DMatrix(finalResult);
 
 //        TODO
@@ -176,8 +179,8 @@ public class PhotoCompressor {
 //
 
 //        print2DMatrix(result);
-
-//        imageOperations.generateImage(result, "src\\main\\resources\\test_sheep_compressed.jpg", "jpg");
+        int[][] resultInt = matrixOperations.convertToInt(finalResult);
+        imageOperations.generateImage(resultInt, "src\\main\\resources\\test_sheep_compressed.jpg", "jpg");
 
     }
 }
