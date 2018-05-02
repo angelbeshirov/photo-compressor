@@ -21,50 +21,65 @@ public class ImageOperations {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 int tempValue = image.getRGB(col, row);
-                Color color1 = new Color(tempValue);
+                Color clr = new Color(tempValue);
                 if (extractColor == ExtractColor.RED) {
-                    result[row][col] = color1.getRed();
+                    result[row][col] = clr.getRed();
                 } else if (extractColor == ExtractColor.GREEN) {
-                    result[row][col] = color1.getGreen();
+                    result[row][col] = clr.getGreen();
                 } else if (extractColor == ExtractColor.BLUE) {
-                    result[row][col] = color1.getBlue();
+                    result[row][col] = clr.getBlue();
                 } else if (extractColor == ExtractColor.ALPHA) {
-                    result[row][col] = color1.getAlpha();
+                    result[row][col] = clr.getAlpha();
                 }
             }
         }
         return result;
     }
 
-    public void writeToFile(int[][] matrix, String fileName) throws FileNotFoundException {
+    public void writeToFile(int[][] matrix, String fileName) {
         File file = new File(fileName);
-        PrintWriter printWriter = new PrintWriter(file);
+        try (PrintWriter printWriter = new PrintWriter(file)) {
 
-        for (int row = 0; row < matrix.length; row++) {
-            for (int column = 0; column < matrix[row].length; column++) {
-                printWriter.print(matrix[row][column] + " ");
+            for (int row = 0; row < matrix.length; row++) {
+                for (int column = 0; column < matrix[row].length; column++) {
+                    printWriter.print(matrix[row][column] + " ");
+                }
+                printWriter.println();
             }
-            printWriter.println();
+            printWriter.flush();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Problem with the file, it was not found or invalid");
+            //TODO
+            //add logging
         }
     }
 
-    public void writeToFile(double[][] matrix, String fileName) throws FileNotFoundException {
+    public void writeToFile(double[][] matrix, String fileName) {
         File file = new File(fileName);
-        PrintWriter printWriter = new PrintWriter(file);
+        try (PrintWriter printWriter = new PrintWriter(file)) {
 
-        for (int row = 0; row < matrix.length; row++) {
-            for (int column = 0; column < matrix[row].length; column++) {
-                printWriter.print(matrix[row][column] + " ");
+            for (int row = 0; row < matrix.length; row++) {
+                for (int column = 0; column < matrix[row].length; column++) {
+                    printWriter.print(matrix[row][column] + " ");
+                }
+                printWriter.println();
             }
-            printWriter.println();
+            printWriter.flush();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Problem with the file, it was not found or invalid");
+            //TODO
+            //add logging
         }
     }
 
     public int[][] getRGBMatrix(int[][] matrixRed, int[][] matrixGreen, int[][] matrixBlue, int[][] matrixAlpha) {
-        int[][] result = new int[matrixRed.length][matrixRed[0].length];
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result[0].length; j++) {
+        int rows = matrixRed.length;
+        int columns = matrixRed[0].length;
+        int[][] result = new int[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 result[i][j] = new Color(matrixRed[i][j], matrixGreen[i][j], matrixBlue[i][j], matrixAlpha[i][j]).getRGB();
+
             }
         }
         return result;
