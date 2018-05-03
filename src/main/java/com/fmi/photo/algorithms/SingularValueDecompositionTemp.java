@@ -33,6 +33,7 @@ public class SingularValueDecompositionTemp {
         U = generateUis(Av, singularValues);
 //            U is by row so needs to be transposed to become the real U
         S = matrixOperations.generateDiagonalMatrix(singularValues);
+
         V = eigenVectors;
 //          each eigenVector is a row in this matrix, so there is no point to transpose it here and then transpose it again
 //          when multiplying at the end

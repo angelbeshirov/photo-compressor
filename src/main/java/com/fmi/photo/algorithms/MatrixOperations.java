@@ -36,6 +36,17 @@ public class MatrixOperations {
         return result;
     }
 
+    public int[][] subtractMatrix(int[][] matrix1, int[][] matrix2) {
+        int[][] result = new int[matrix1.length][matrix1[0].length];
+        for (int i = 0; i < matrix1.length; ++i) {
+            for (int j = 0; j < matrix1[0].length; ++j) {
+                result[i][j] = Math.abs(matrix1[i][j] - matrix2[i][j]);
+            }
+        }
+
+        return result;
+    }
+
     public double[] getEigenValues(double[][] matrix) {
         RealMatrix realMatrix = new Array2DRowRealMatrix(matrix);
         EigenDecomposition eigenDecomposition = new EigenDecomposition(realMatrix);

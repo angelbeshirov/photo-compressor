@@ -36,6 +36,24 @@ public class ImageOperations {
         return result;
     }
 
+    public static void writeSingularValues(double[][] singMatrix, String fileName) {
+        File file = new File(fileName);
+        try (PrintWriter printWriter = new PrintWriter(file)) {
+            printWriter.write("a = {");
+            for (int row = 0; row < singMatrix.length; row++) {
+
+                printWriter.write(Double.valueOf(singMatrix[row][row]).toString());
+                if(row != singMatrix.length - 1) {
+                    printWriter.write(", ");
+                }
+            }
+            printWriter.write("}");
+            printWriter.flush();
+        } catch(FileNotFoundException e) {
+            System.out.println("File not found!!!!!");
+        }
+    }
+
     public void writeToFile(int[][] matrix, String fileName) {
         File file = new File(fileName);
         try (PrintWriter printWriter = new PrintWriter(file)) {
@@ -90,6 +108,7 @@ public class ImageOperations {
         for (int i = 0; i < rgbMatrix.length; i++) {
             for (int j = 0; j < rgbMatrix[i].length; j++) {
                 img.setRGB(j, i, rgbMatrix[i][j]);
+
             }
         }
         File output = new File(filename);
