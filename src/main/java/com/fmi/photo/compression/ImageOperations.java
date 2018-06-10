@@ -67,8 +67,6 @@ public class ImageOperations {
             printWriter.flush();
         } catch (FileNotFoundException ex) {
             System.out.println("Problem with the file, it was not found or invalid");
-            //TODO
-            //add logging
         }
     }
 
@@ -85,8 +83,6 @@ public class ImageOperations {
             printWriter.flush();
         } catch (FileNotFoundException ex) {
             System.out.println("Problem with the file, it was not found or invalid");
-            //TODO
-            //add logging
         }
     }
 
@@ -103,15 +99,20 @@ public class ImageOperations {
         return result;
     }
 
-    public void generateImage(int[][] rgbMatrix, String filename, String extension) throws IOException {
-        BufferedImage img = new BufferedImage(rgbMatrix[0].length, rgbMatrix.length, BufferedImage.TYPE_INT_RGB);
+    public BufferedImage generateImage(int[][] rgbMatrix){
+        BufferedImage img = new BufferedImage(rgbMatrix[0].length, rgbMatrix.length, BufferedImage.TYPE_INT_BGR);
         for (int i = 0; i < rgbMatrix.length; i++) {
             for (int j = 0; j < rgbMatrix[i].length; j++) {
                 img.setRGB(j, i, rgbMatrix[i][j]);
 
             }
         }
+
+        return img;
+    }
+
+    public void writeImage(BufferedImage bufferedImage, String filename, String extension) throws IOException {
         File output = new File(filename);
-        ImageIO.write(img, extension, output);
+        ImageIO.write(bufferedImage, extension, output);
     }
 }

@@ -36,11 +36,11 @@ public class MatrixOperations {
         return result;
     }
 
-    public int[][] subtractMatrix(int[][] matrix1, int[][] matrix2) {
-        int[][] result = new int[matrix1.length][matrix1[0].length];
-        for (int i = 0; i < matrix1.length; ++i) {
-            for (int j = 0; j < matrix1[0].length; ++j) {
-                result[i][j] = Math.abs(matrix1[i][j] - matrix2[i][j]);
+    public int[][] subtractMatrix(int[][] a, int[][] b) {
+        int[][] result = new int[a.length][a[0].length];
+        for (int i = 0; i < a.length; ++i) {
+            for (int j = 0; j < a[0].length; ++j) {
+                result[i][j] = Math.abs(a[i][j] - b[i][j]);
             }
         }
 
@@ -94,4 +94,19 @@ public class MatrixOperations {
 
         return result;
     }
+
+    public void normalizeMatrix(int[][] a) {
+
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                if (a[i][j] < 0) a[i][j] = 0;
+                else if (a[i][j] > 255) a[i][j] = 255;
+                else {
+                    a[i][j] = a[i][j];
+                }
+            }
+        }
+    }
+
+
 }

@@ -1,6 +1,6 @@
 package com.fmi.photo.algorithms;
 
-public class SingularValueDecompositionTemp {
+public class SingularValueDecomposition {
 
     private double[][] A;
     private double[][] U;
@@ -11,7 +11,7 @@ public class SingularValueDecompositionTemp {
 
     private boolean isIrregular = false; // true if the columns are greater than the rows
 
-    public SingularValueDecompositionTemp(double[][] A) {
+    public SingularValueDecomposition(double[][] A) {
         this.A = A;
 
         double[][] result;
@@ -115,11 +115,12 @@ public class SingularValueDecompositionTemp {
     }
 
     /**
-     * Removes the values which are smaller than the threshold. It is assumed that the matrix is diagonal.
-     * Compressing happens only on the diagonal
-     * @param threshold threshold based on which the removing happens
+     * Removes the values which are smaller than percent of the greatest value in the diagonal matrix.
+     * It is assumed that the matrix is diagonal.
+     * @param percentage percent based on which the threshold is calculated
      */
-    public void applyCompression(double threshold) {
+    public void applyPercentageCompression(int percentage) {
+        double threshold = (percentage/100.0)*S[0][0];
         for(int i = this.S.length - 1; i >= 0; i--) {
             if(this.S[i][i] <= threshold) {
                 this.S[i][i] = 0;
